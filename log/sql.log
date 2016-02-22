@@ -1,0 +1,18 @@
+[2016-02-22T20:12:03.567Z] Executing (default): CREATE database IF NOT EXISTS decision;
+[2016-02-22T20:12:04.420Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:18:16.040Z] Executing (default): CREATE database IF NOT EXISTS decision;
+[2016-02-22T20:18:48.771Z] Executing (default): CREATE database IF NOT EXISTS decision;
+[2016-02-22T20:19:04.078Z] Executing (default): CREATE database IF NOT EXISTS decision;
+[2016-02-22T20:19:11.935Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:24:43.587Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:25:22.154Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:25:52.008Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:27:18.448Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:27:49.488Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:28:51.977Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:30:09.891Z] Executing (default): CREATE database IF NOT EXISTS decision_dev;
+[2016-02-22T20:35:05.063Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:35:13.840Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:36:07.229Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T20:39:22.083Z] Executing (default): SELECT VERSION() as `version`
+[2016-02-22T21:05:49.678Z] Executing (default): SELECT VERSION() as `version`
