@@ -1,0 +1,8 @@
+node_modules/
+npm-debug.log
+TODO
+make.js
+docs/public/index.restdown
+coverage/
+log/sql.log
+env.sh

@@ -1,0 +1,18 @@
+# -*- mode: makefile -*-
+
+SUNGLASSES 	= \xf0\x9f\x98\x8e
+THUMBS_UP	= \xf0\x9f\x91\x8d
+THUMBS_DOWN	= \xf0\x9f\x91\x8e
+OK_HAND		= \xf0\x9f\x91\x8c
+GREEN		= \033[0;32m
+CLEAR		= \033[0;0m
+BLACK		= \033[0;30m
+
+
+# Make it purty
+title:
+	@echo "$(BLACK)" && \
+	node -pe "Array(50).join('.') + '$(CLEAR)';" && \
+	node -pe "Array((Math.floor(Math.max(1, 50 - '$(TITLE)'.length) / 2))) \
+ 		 	.join(' ') + '$(TITLE)' + '$(BLACK)';" && \
+	node -pe "Array(50).join('.') + '$(CLEAR)'"
