@@ -1,0 +1,28 @@
+{
+  "name": "λαlbao-boilerplate",
+  "version": "0.1.0",
+  "description": "You should change this",
+  "main": "index.js",
+  "scripts": {
+      "test": "NODE_ENV=unittesting mocha $(find test -name *.test.js)",
+      "lint": "git diff --cached --name-only --diff-filter=ACM | grep '.js$' | xargs eslint --fix; exit 0;",
+      "start": "node --harmony index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bunyan": "^1.5.1",
+    "mysql": "^2.10.2",
+    "restify": "^4.0.3",
+    "sequelize": "^3.19.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^1.10.3",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "nock": "^7.0.2",
+    "sinon": "^1.17.3",
+    "supertest": "^1.1.0"
+  }
+}
