@@ -13,7 +13,7 @@ module.exports = deepCopy(defaults, {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'decision_dev',
+    database: 'laboilerplate_dev',
     logging: function (s) {
       var line = sprintf('[%s] %s\n', new Date().toJSON(), s);
       sqlLog.write(line);

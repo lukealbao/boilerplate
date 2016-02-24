@@ -15,7 +15,7 @@ function ValidationError (fields) {
   this.body.detail = {
     failedParameters: fields
   };
-};
+}
 util.inherits(ValidationError, restify.RestError);
 
 function NoDatabaseResourceError (name, dbHost) {

@@ -1,0 +1,205 @@
+---
+title: API Docs |  Node Boilerplate
+markdown2extras: wiki-tables,fenced-code-blocks, code-friendly
+repo: http://github.com/lukealbao/node-boilerplate
+---
+
+# λαlbao Boilerplate
+For quickly creating apps built on [restify](http://restify.com/) and
+[sequelize](http://sequelize.readthedocs.org/en/latest/). Originally
+created for spinning up new services in a production environment, it
+features some opinionated structure to simplify developing in a
+multi-configuration environment. It assumes that you want your service
+to be testable, inspectable, easily configurable, and able to work
+with other services without you helping. Like all boilerplates, it is
+based on enlightened laziness. 
+
+# Features
+
+### Multiple configuration
+Probably the most unique feature is the way configuration is
+handled. It's easy to set a default configuration which is extended
+incrementally according to different settings in `NODE_ENV`. And there
+is a command-line interface for inspecting your configuration at any
+time. See below for more details.
+
+### Cluster support
+It is assumed that your service will use the cluster module. So this
+provides scaffolding that will run a process for each available CPU,
+as well as log cluster activity out of the box. It is also separated
+from the app code to allow for easy testing. 
+
+### Friendly `require` functionality
+Require entire directories, and the files they contain will be
+available as attributes of the required object. For example, if you
+save a file in the `handlers` directory called `get-funky.js`, you can
+do this elsewhere:
+
+```
+var handlers = require(__dirname + '/handlers');
+app.get('/funky', handlers.getFunky);
+```
+
+Notice that even though the filename was `hyphen-cased`, the object it
+exports is added to the parent directory in `camelCase`. The trick is
+in the `handlers/index.js` file. Such a file exists in some, but not
+all, folders. If you would like this functionality in any folder,
+simply copy the `index.js` file into that folder.
+
+### Quick Setup
+If you have a database server running, you can have a database and
+begin modeling it and setting up fixtures within one minute. Once your
+models are created, the same setup will create a new database with
+schema in the same amount of time. Deploying or getting a new
+developer up and running is a snap.
+    
+# Dependencies
+This will install a minimal number of nuts and bolts for your app:
+
+- [restify](https://www.npmjs.com/package/restify): A nice, light
+  framework for creating RESTful services with both a server and
+  client component.
+- [bunyan](https://www.npmjs.com/package/bunyan): A logging framework
+  with some great production features and DTrace support.
+- [sequelize](https://www.npmjs.com/package/sequelize): A promise-based ORM that can work with PostgreSQL, MySQL,
+  MariaDB, SQLite, and MSSQL. 
+
+And a number of tools that we've found useful for testing. Unlike the
+above dependencies, you may find this boilerplate useful whether or
+not you use all of these:
+
+- mocha: A testing framework with multiple reporting styles.
+- chai: Friendly assertions.
+- sinon: Crucial mocking, stubbing, spying library for unit tests.
+- supertest: Write tests as HTTP requests.
+- nock: A mocking library to stub remote servers for testing your
+  service's client operations.
+
+
+# Get Started
+Before we start, this opinionated boilerplate assumes that you will
+have `NODE_ENV` set to `development` in your local shell
+environment. If you don't know how to do that, look it up. It's easy,
+but I won't waste the space here for it.
+
+Creating a new app will require you to do only two things: First,
+you'll have to walk through `npm init`. Of course you do. Secondly,
+you have to specify where you want the new app built. After all that
+rigamarole, you will have a new repo with an inital git commit and you
+can get developing.
+
+You begin the process from the boilerplate directory, and you just:
+
+```
+$ make
+```
+
+Immediately you will go through the `npm init` process. Once you've
+done that, the dependencies will be built, scripts will be run, and
+finally it will give you this prompt:
+
+```
+--------------------------------------------------
+
+Enter a path to build the project (./build):
+```
+
+Enter in the path where you want this thing to live. By default, it will
+put it in `./build`. Naturally, you'd want to move and/or rename
+that, especially since any subsequent boilerplate builds will
+overwrite it.
+
+# Configure 
+Configuration is a chore. This will be a little easier. This
+boilerplate attempts to modularize configuration to facilitate
+configuring different environments. Here's what you need to know:
+
+1. An "environment" is defined by the `NODE_ENV` string in the
+   environment of the user running the Node process. This appears in
+   `process.env.NODE_ENV` variable in a Node process. Setting this is
+   done via your shell environment.
+2. The `config` folder exports a single object, which contains the
+   *active* configuration according to the current
+   `NODE_ENV`. Elsewhere in your application code, you should
+   `require('./config')` and let the environment set the differences.
+3. You set your default configurations in `config/defaults.js`.
+4. You set overrides or extensions for various environments by
+   configuring `config/<environment-name>.js`.
+5. Environment configurations *extend* and *overwrite* defaults. Thus,
+   any configuration in the `default.js` that is not overwritten by an
+   environment configuration will be present in the exported
+   configuration - which helps minimize duplication. 
+
+See `config/index.js` for more details on customizing
+configurations.
+
+**PROTIP:** From the root of the project directory,
+you can call `make printcfg` to see the entire `config` exported in
+the current environment, or use `make cfg-<element>` for a specific
+item. If the `<element>` is a non-primitive object, you can access
+its attributes via dot notation. If you are looking to check a
+configuration in an array, you can still use dot notation. Everything
+that is available when a module requires `config` is inspectable:
+
+```
+$ make cfg-server
+{ name: 'BoilerplateApp', host: '0.0.0.0', port: 4434 }
+
+$ make cfg-server.name
+BoilerplateApp
+```
+
+## Set up a database
+
+```
+$ make newdb
+```
+
+Provided you have a database server running, this will create a new
+database. When getting started, you will likely want to change a few
+configurations before you run `make newdb`. You'll want a different
+database name, and if you have something other than MySQL running on
+your localhost, you'll need to specify that, too. You can do that via the
+`config/development.js` (or `config.default.js`!) files. 
+
+This command is non-destructive and will only create a database if it
+does not exist.
+
+# Conventions
+
+## App code
+- Put your restify declarations in `api.js`. By default, `index.js`
+  will spin up a worker running `api.js` for each available CPU.
+- Define handlers in the `handlers/` directory. Each file in that
+  directory should export a single restify-compliant (i.e.,
+  `(req, res, next)` signature) function. The `handlers/index.js`
+  helper script will export the `handlers` directory as a single
+  object, attaching all files as camelCased sub-object. So if you add
+  a new handler in `/handlers/get-all-the-things.js`, you can access
+  it with `require('./handlers').getAllTheThings`. Pretty cool!
+
+
+```
+├── Makefile
+├── README.md
+├── api.js
+├── config
+│   ├── defaults.js
+│   ├── development.js
+│   └── unittest.js
+├── docs
+│   ├── index.restdown
+│   ├── branding
+│   └── public
+├── handlers
+├── lib
+│   ├── db.js
+│   ├── errors.js
+│   └── models
+├── log
+├── test
+│   └── fixtures
+│       ├── db.js
+│       └── restify.js
+└── tools
+```

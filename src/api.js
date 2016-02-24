@@ -14,7 +14,7 @@ var restify = require('restify');
 var bunyan = require('bunyan');
 var config = require(__dirname + '/config');
 
-var handlers = require(__dirname + '/handlers');
+var handlers = require(__dirname + '/handlers'); // eslint-disable-line 
 var errors = require(__dirname + '/lib/errors');
 var models = require(__dirname + '/lib/db').models;
 

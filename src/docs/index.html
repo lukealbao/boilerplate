@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>API Docs |  Node Boilerplate</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="media/css/restdown.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="header">
+    <a href="http://github.com/lukealbao/node-boilerplate">
+      <h1>API Docs |  Node Boilerplate</h1>
+    </a>
+  </div>
+
+    <div id="sidebar">
+<ul>
+  <li><div><a href="#features">Features</a></div></li>
+  <li><div><a href="#dependencies">Dependencies</a></div></li>
+  <li><div><a href="#get-started">Get Started</a></div></li>
+  <li><div><a href="#configure">Configure</a></div>
+  <ul>
+    <li><div><a href="#set-up-a-database">Set up a database</a></div></li>
+  </ul></li>
+  <li><div><a href="#conventions">Conventions</a></div>
+  <ul>
+    <li><div><a href="#app-code">App code</a></div></li>
+  </ul></li>
+</ul>
+
+    </div>
+    <div id="content">
+
+<h1>λαlbao Boilerplate</h1>
+<div class="intro">
+
+
+<p>For quickly creating apps built on <a href="http://restify.com/">restify</a> and
+<a href="http://sequelize.readthedocs.org/en/latest/">sequelize</a>. Originally
+created for spinning up new services in a production environment, it
+features some opinionated structure to simplify developing in a
+multi-configuration environment. It assumes that you want your service
+to be testable, inspectable, easily configurable, and able to work
+with other services without you helping. Like all boilerplates, it is
+based on enlightened laziness. </p>
+
+
+</div>
+<h1 id="features">Features</h1>
+
+<h3 id="multiple-configuration">Multiple configuration</h3>
+
+<p>Probably the most unique feature is the way configuration is
+handled. It's easy to set a default configuration which is extended
+incrementally according to different settings in <code>NODE_ENV</code>. And there
+is a command-line interface for inspecting your configuration at any
+time. See below for more details.</p>
+
+<h3 id="cluster-support">Cluster support</h3>
+
+<p>It is assumed that your service will use the cluster module. So this
+provides scaffolding that will run a process for each available CPU,
+as well as log cluster activity out of the box. It is also separated
+from the app code to allow for easy testing. </p>
+
+<h3 id="friendly-require-functionality">Friendly <code>require</code> functionality</h3>
+
+<p>Require entire directories, and the files they contain will be
+available as attributes of the required object. For example, if you
+save a file in the <code>handlers</code> directory called <code>get-funky.js</code>, you can
+do this elsewhere:</p>
+
+<pre><code>var handlers = require(__dirname + '/handlers');
+app.get('/funky', handlers.getFunky);
+</code></pre>
+
+<p>Notice that even though the filename was <code>hyphen-cased</code>, the object it
+exports is added to the parent directory in <code>camelCase</code>. The trick is
+in the <code>handlers/index.js</code> file. Such a file exists in some, but not
+all, folders. If you would like this functionality in any folder,
+simply copy the <code>index.js</code> file into that folder.</p>
+
+<h3 id="quick-setup">Quick Setup</h3>
+
+<p>If you have a database server running, you can have a database and
+begin modeling it and setting up fixtures within one minute. Once your
+models are created, the same setup will create a new database with
+schema in the same amount of time. Deploying or getting a new
+developer up and running is a snap.</p>
+
+<h1 id="dependencies">Dependencies</h1>
+
+<p>This will install a minimal number of nuts and bolts for your app:</p>
+
+<ul>
+<li><a href="https://www.npmjs.com/package/restify">restify</a>: A nice, light
+framework for creating RESTful services with both a server and
+client component.</li>
+<li><a href="https://www.npmjs.com/package/bunyan">bunyan</a>: A logging framework
+with some great production features and DTrace support.</li>
+<li><a href="https://www.npmjs.com/package/sequelize">sequelize</a>: A promise-based ORM that can work with PostgreSQL, MySQL,
+MariaDB, SQLite, and MSSQL. </li>
+</ul>
+
+<p>And a number of tools that we've found useful for testing. Unlike the
+above dependencies, you may find this boilerplate useful whether or
+not you use all of these:</p>
+
+<ul>
+<li>mocha: A testing framework with multiple reporting styles.</li>
+<li>chai: Friendly assertions.</li>
+<li>sinon: Crucial mocking, stubbing, spying library for unit tests.</li>
+<li>supertest: Write tests as HTTP requests.</li>
+<li>nock: A mocking library to stub remote servers for testing your
+service's client operations.</li>
+</ul>
+
+<h1 id="get-started">Get Started</h1>
+
+<p>Before we start, this opinionated boilerplate assumes that you will
+have <code>NODE_ENV</code> set to <code>development</code> in your local shell
+environment. If you don't know how to do that, look it up. It's easy,
+but I won't waste the space here for it.</p>
+
+<p>Creating a new app will require you to do only two things: First,
+you'll have to walk through <code>npm init</code>. Of course you do. Secondly,
+you have to specify where you want the new app built. After all that
+rigamarole, you will have a new repo with an inital git commit and you
+can get developing.</p>
+
+<p>You begin the process from the boilerplate directory, and you just:</p>
+
+<pre class="shell"><code>make
+</code></pre>
+
+<p>Immediately you will go through the <code>npm init</code> process. Once you've
+done that, the dependencies will be built, scripts will be run, and
+finally it will give you this prompt:</p>
+
+<pre><code>--------------------------------------------------
+
+Enter a path to build the project (./build):
+</code></pre>
+
+<p>Enter in the path where you want this thing to live. By default, it will
+put it in <code>./build</code>. Naturally, you'd want to move and/or rename
+that, especially since any subsequent boilerplate builds will
+overwrite it.</p>
+
+<h1 id="configure">Configure</h1>
+
+<p>Configuration is a chore. This will be a little easier. This
+boilerplate attempts to modularize configuration to facilitate
+configuring different environments. Here's what you need to know:</p>
+
+<ol>
+<li>An "environment" is defined by the <code>NODE_ENV</code> string in the
+environment of the user running the Node process. This appears in
+<code>process.env.NODE_ENV</code> variable in a Node process. Setting this is
+done via your shell environment.</li>
+<li>The <code>config</code> folder exports a single object, which contains the
+<em>active</em> configuration according to the current
+<code>NODE_ENV</code>. Elsewhere in your application code, you should
+<code>require('./config')</code> and let the environment set the differences.</li>
+<li>You set your default configurations in <code>config/defaults.js</code>.</li>
+<li>You set overrides or extensions for various environments by
+configuring <code>config/&lt;environment-name&gt;.js</code>.</li>
+<li>Environment configurations <em>extend</em> and <em>overwrite</em> defaults. Thus,
+any configuration in the <code>default.js</code> that is not overwritten by an
+environment configuration will be present in the exported
+configuration - which helps minimize duplication. </li>
+</ol>
+
+<p>See <code>config/index.js</code> for more details on customizing
+configurations.</p>
+
+<p><strong>PROTIP:</strong> From the root of the project directory,
+you can call <code>make printcfg</code> to see the entire <code>config</code> exported in
+the current environment, or use <code>make cfg-&lt;element&gt;</code> for a specific
+item. If the <code>&lt;element&gt;</code> is a non-primitive object, you can access
+its attributes via dot notation. If you are looking to check a
+configuration in an array, you can still use dot notation. Everything
+that is available when a module requires <code>config</code> is inspectable:</p>
+
+<pre class="shell"><code>make cfg-server
+{ name: 'BoilerplateApp', host: '0.0.0.0', port: 4434 }
+
+$ make cfg-server.name
+BoilerplateApp
+</code></pre>
+
+<h2 id="set-up-a-database">Set up a database</h2>
+
+<pre class="shell"><code>make newdb
+</code></pre>
+
+<p>Provided you have a database server running, this will create a new
+database. When getting started, you will likely want to change a few
+configurations before you run <code>make newdb</code>. You'll want a different
+database name, and if you have something other than MySQL running on
+your localhost, you'll need to specify that, too. You can do that via the
+<code>config/development.js</code> (or <code>config.default.js</code>!) files. </p>
+
+<p>This command is non-destructive and will only create a database if it
+does not exist.</p>
+
+<h1 id="conventions">Conventions</h1>
+
+<h2 id="app-code">App code</h2>
+
+<ul>
+<li>Put your restify declarations in <code>api.js</code>. By default, <code>index.js</code>
+will spin up a worker running <code>api.js</code> for each available CPU.</li>
+<li>Define handlers in the <code>handlers/</code> directory. Each file in that
+directory should export a single restify-compliant (i.e.,
+<code>(req, res, next)</code> signature) function. The <code>handlers/index.js</code>
+helper script will export the <code>handlers</code> directory as a single
+object, attaching all files as camelCased sub-object. So if you add
+a new handler in <code>/handlers/get-all-the-things.js</code>, you can access
+it with <code>require('./handlers').getAllTheThings</code>. Pretty cool!</li>
+</ul>
+
+<pre><code>├── Makefile
+├── README.md
+├── api.js
+├── config
+│   ├── defaults.js
+│   ├── development.js
+│   └── unittest.js
+├── docs
+│   ├── index.restdown
+│   ├── branding
+│   └── public
+├── handlers
+├── lib
+│   ├── db.js
+│   ├── errors.js
+│   └── models
+├── log
+├── test
+│   └── fixtures
+│       ├── db.js
+│       └── restify.js
+└── tools
+</code></pre>
+
+    </div> <!-- #content -->
+<script type="text/javascript" charset="utf-8">
+$(function() {
+    var headerHeight = $("#header").height();
+
+    var sections = $("#content h1[id], #content h2[id]");
+    var sectionOffsets = [];
+    var slack = 100;  // Give the section scroll some slack (in pixels).
+    sections.each(function(elem) {
+        sectionOffsets.push($(this).offset().top - headerHeight - slack);
+    });
+
+    var currSectionIdx = -1;
+    function getSectionIdx(scrollDistance) {
+        if (scrollDistance < sectionOffsets[0]) {
+            return -1;
+        } else {
+            for (var id = sectionOffsets.length; id > 0; id--) {
+                if (scrollDistance > sectionOffsets[id - 1]) {
+                    return id - 1;
+                    break;
+                }
+            }
+        }
+    }
+
+    /** {{{ http://code.activestate.com/recipes/577787/ (r2) */
+    _slugify_strip_re = /[^\w\s-]/g;
+    _slugify_hyphenate_re = /[-\s]+/g;
+    function slugify(s) {
+      s = s.replace(_slugify_strip_re, '').trim().toLowerCase();
+      s = s.replace(_slugify_hyphenate_re, '-');
+      return s;
+    }
+    /** end of http://code.activestate.com/recipes/577787/ }}} */
+
+    /* See <https://github.com/trentm/restdown/issues/11>. */
+    function safechars(s) {
+      return s.replace(_slugify_strip_re, '');
+    }
+
+    $("#content").scroll(function() {
+        var scrollDistance = $("#content").scrollTop();
+        var sectionIdx = getSectionIdx(scrollDistance);
+
+        if (sectionIdx !== currSectionIdx) {
+            $("#sidebar li>div").removeClass("current");
+            currSectionIdx = sectionIdx;
+            if (currSectionIdx >= 0) {
+                var heading = $(sections[currSectionIdx]).text();
+                var possibleAnchors = [
+                    slugify(heading), // h1 or non-method h2
+                    heading.replace(/ /g, '-'), // h2 method, just name or just endpoint
+                    heading.slice(0, heading.lastIndexOf(' (')).trimRight().replace(/ /g, '-'), // h2 method, name and endpoint
+                ];
+                for (var i=0; i < possibleAnchors.length; i++) {
+                    var anchor = safechars(possibleAnchors[i]);
+                    try {
+                        $("#sidebar a[href=#" + anchor + "]").parent().addClass("current");
+                    } catch (e) {
+                        /* Ignore error if no such element. */
+                        console.log(e)
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+
+</body>
+</html>
