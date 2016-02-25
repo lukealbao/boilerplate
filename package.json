@@ -1,0 +1,22 @@
+{
+  "name": "node-bp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/make.sh",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+    "bin": {
+        "bp": "./bin/make.sh"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukealbao/boilerplate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukealbao/boilerplate/issues"
+  },
+  "homepage": "https://github.com/lukealbao/boilerplate#readme"
+}

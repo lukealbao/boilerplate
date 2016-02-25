@@ -4,7 +4,7 @@ var fs = require('fs');
 
 module.exports = {
   server: {
-    name: 'BoilerplateApp',
+    name: 'Boilerplate',
     host: '0.0.0.0',
     port: 4434
   },
@@ -13,7 +13,7 @@ module.exports = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+    database: 'boilerplatedb',
     port: process.env.DB_PORT,
     dialectOptions: {
     },
@@ -33,9 +33,11 @@ module.exports = {
   },
   auditLog: {
     name: 'BoilerplateAuditLog',
-    stream: fs.createWriteStream('/tmp/audit.log', {
-      defaultEncoding: 'utf8',
-      flags: 'a'
-    })
+    streams: [{
+      stream: fs.createWriteStream('/tmp/audit.log', {
+        defaultEncoding: 'utf8',
+        flags: 'a'
+      })
+    }]
   }
 };

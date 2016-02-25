@@ -14,9 +14,9 @@ module.exports = deepCopy(development, {
   },
   auditLog: {
     name: 'BuryAuditLog',
-    stream: {
+    streams: [{
       stream: openFile('/dev/null'),
       level: 'info'
-    }
+    }]
   }
 });

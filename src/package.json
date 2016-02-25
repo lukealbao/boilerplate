@@ -1,0 +1,33 @@
+{
+  "name": "boilerplate-project",
+  "version": "1.0.0",
+  "description": "This is a skeleton project generated with https://github.com/lukealbao/boilerplate",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {
+    "bluebird": "^3.3.3",
+    "bunyan": "^1.7.0",
+    "mysql": "^2.10.2",
+    "restify": "^4.0.4",
+    "sequelize": "^3.19.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^2.2.0",
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5",
+    "nock": "^7.2.2",
+    "sinon": "^1.17.3",
+    "supertest": "^1.2.0"
+  },
+  "scripts": {
+    "test": "NODE_ENV=unittest mocha $(find test -name *.test.js)",
+    "lint": "git diff --cached --name-only --diff-filter=ACM | grep '.js$' | xargs eslint --fix; exit 0;",
+    "start": "node --harmony index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

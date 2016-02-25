@@ -82,32 +82,32 @@ have `NODE_ENV` set to `development` in your local shell
 environment. If you don't know how to do that, look it up. It's easy,
 but I won't waste the space here for it.
 
-Creating a new app will require you to do only two things: First,
-you'll have to walk through `npm init`. Of course you do. Secondly,
-you have to specify where you want the new app built. After all that
-rigamarole, you will have a new repo with an inital git commit and you
-can get developing.
-
-You begin the process from the boilerplate directory, and you just:
-
+First, install the boilerplate generator as a global npm module.
 ```
-$ make
+$ git clone https://github.com/lukealbao/boilerplate.git
+$ npm install -g boilerplate/
 ```
 
-Immediately you will go through the `npm init` process. Once you've
-done that, the dependencies will be built, scripts will be run, and
-finally it will give you this prompt:
+The boilerplate generator will be installed as a global binary
+available on your `PATH` as `bp`. To build a new project, simply
+create a new directory where you want it built, move to that
+directory, and run `bp`:
 
 ```
---------------------------------------------------
-
-Enter a path to build the project (./build):
+$ mkdir new-project
+$ cd new-project
+$ bp
 ```
 
-Enter in the path where you want this thing to live. By default, it will
-put it in `./build`. Naturally, you'd want to move and/or rename
-that, especially since any subsequent boilerplate builds will
-overwrite it.
+You will be asked to name your project. You should use the convention
+of a short, lowercase name with hyphens separating different words.
+
+```
+Enter a name for your project:
+```
+
+Your new app will have an initial commit, and you can get started.
+
 
 # Configure 
 Configuration is a chore. This will be a little easier. This

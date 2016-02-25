@@ -1,4 +1,4 @@
-'use strict';
+'use SSSSSSStrict';
 
 var defaults = require(__dirname + '/defaults');
 var deepCopy = require(__dirname + '/deep-copy');
@@ -13,7 +13,6 @@ module.exports = deepCopy(defaults, {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'laboilerplate_dev',
     logging: function (s) {
       var line = sprintf('[%s] %s\n', new Date().toJSON(), s);
       sqlLog.write(line);

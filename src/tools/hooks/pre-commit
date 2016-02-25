@@ -23,14 +23,10 @@ if [[ "$?" == 1 ]]; then
   exit 1
 fi
 
-for FILE in $STAGED_FILES
-do
-  eslint "$FILE"
-
-  if [[ "$?" != 0 ]]; then
-    PASS=false
-  fi
-done
+eslint .
+if [[ "$?" != 0 ]]; then
+  PASS=false
+fi
 
 echo "\nJavascript validation complete\n"
 
