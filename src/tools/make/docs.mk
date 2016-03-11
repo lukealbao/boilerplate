@@ -8,11 +8,11 @@ DOC_BUILD	= $(DOC_ROOT)/public
 DOC_INDEX	= $(DOC_ROOT)/index.restdown
 
 .PHONY: docs
-docs: $(DOC_INDEX) $(RESTDOWN_EXEC)
-	$(RESTDOWN) \
-	-b $(DOC_ROOT)/branding \
-	-m $(DOC_ROOT) \
-	$(DOC_INDEX)
+docs: $(DOC_ROOT)/index.html
+	@echo "API Doc at $(DOC_ROOT)/index.html"
 
-$(RESTDOWN_EXEC): $(shell which gitf)
+$(DOC_ROOT)/index.html: $(RESTDOWN_EXEC)
+	$(RESTDOWN) -b $(DOC_BUILD)/branding -m $(DOC_ROOT) $(DOC_INDEX)
+
+$(RESTDOWN_EXEC): $(shell which git)
 	git clone git://github.com/trentm/restdown.git $(RESTDOWN_DIR)

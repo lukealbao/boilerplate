@@ -26,7 +26,8 @@
   "scripts": {
     "test": "NODE_ENV=unittest mocha $(find test -name *.test.js)",
     "lint": "git diff --cached --name-only --diff-filter=ACM | grep '.js$' | xargs eslint --fix; exit 0;",
-    "start": "node --harmony index.js"
+    "start": "node --harmony index.js",
+    "docs": "make docs && open docs/index.html"
   },
   "author": "",
   "license": "ISC"
