@@ -34,42 +34,127 @@
         <h1>
 <a id="λαlbao-boilerplate" class="anchor" href="#%CE%BB%CE%B1lbao-boilerplate" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>λαlbao Boilerplate</h1>
 
-<p>This repo provides a barebones structure for a Nodejs service built on
-<code>node-restify</code> and <code>sequelize</code>. It allows easy configuring of separate
-environments via extending defaults in the <code>config/</code> directory, as
-well as some specialized <code>make</code> targets for easy setup and deployment.</p>
+<p>For quickly creating apps built on <a href="http://restify.com/">restify</a> and
+<a href="http://sequelize.readthedocs.org/en/latest/">sequelize</a>. Originally
+created for spinning up new services in a production environment, it
+features some opinionated structure to simplify developing in a
+multi-configuration environment. It assumes that you want your service
+to be testable, inspectable, easily configurable, and able to work
+with other services without you helping. Like all boilerplates, it is
+based on enlightened laziness. </p>
 
 <h1>
-<a id="get-started" class="anchor" href="#get-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get started</h1>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Features</h1>
+
+<h3>
+<a id="multiple-configuration" class="anchor" href="#multiple-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Multiple configuration</h3>
+
+<p>Probably the most unique feature is the way configuration is
+handled. It's easy to set a default configuration which is extended
+incrementally according to different settings in <code>NODE_ENV</code>. And there
+is a command-line interface for inspecting your configuration at any
+time. See below for more details.</p>
+
+<h3>
+<a id="cluster-support" class="anchor" href="#cluster-support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cluster support</h3>
+
+<p>It is assumed that your service will use the cluster module. So this
+provides scaffolding that will run a process for each available CPU,
+as well as log cluster activity out of the box. It is also separated
+from the app code to allow for easy testing. </p>
+
+<h3>
+<a id="friendly-require-functionality" class="anchor" href="#friendly-require-functionality" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Friendly <code>require</code> functionality</h3>
+
+<p>Require entire directories, and the files they contain will be
+available as attributes of the required object. For example, if you
+save a file in the <code>handlers</code> directory called <code>get-funky.js</code>, you can
+do this elsewhere:</p>
+
+<pre><code>var handlers = require(__dirname + '/handlers');
+app.get('/funky', handlers.getFunky);
+</code></pre>
+
+<p>Notice that even though the filename was <code>hyphen-cased</code>, the object it
+exports is added to the parent directory in <code>camelCase</code>. The trick is
+in the <code>handlers/index.js</code> file. Such a file exists in some, but not
+all, folders. If you would like this functionality in any folder,
+simply copy the <code>index.js</code> file into that folder.</p>
+
+<h3>
+<a id="quick-setup" class="anchor" href="#quick-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Setup</h3>
+
+<p>If you have a database server running, you can have a database and
+begin modeling it and setting up fixtures within one minute. Once your
+models are created, the same setup will create a new database with
+schema in the same amount of time. Deploying or getting a new
+developer up and running is a snap.</p>
+
+<h1>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies</h1>
+
+<p>This will install a minimal number of nuts and bolts for your app:</p>
 
 <ul>
-<li>Download the source @ <a href="https://github.com/lukealbao/boilerplate/releases/latest">https://github.com/lukealbao/boilerplate/releases/latest</a>
-</li>
-<li>Run <code>git init</code>
-</li>
-<li>That's it. If you want deeper instructions (which you do), keep reading.</li>
+<li>
+<a href="https://www.npmjs.com/package/restify">restify</a>: A nice, light
+framework for creating RESTful services with both a server and
+client component.</li>
+<li>
+<a href="https://www.npmjs.com/package/bunyan">bunyan</a>: A logging framework
+with some great production features and DTrace support.</li>
+<li>
+<a href="https://www.npmjs.com/package/sequelize">sequelize</a>: A promise-based ORM that can work with PostgreSQL, MySQL,
+MariaDB, SQLite, and MSSQL. </li>
+</ul>
+
+<p>And a number of tools that we've found useful for testing. Unlike the
+above dependencies, you may find this boilerplate useful whether or
+not you use all of these:</p>
+
+<ul>
+<li>mocha: A testing framework with multiple reporting styles.</li>
+<li>chai: Friendly assertions.</li>
+<li>sinon: Crucial mocking, stubbing, spying library for unit tests.</li>
+<li>supertest: Write tests as HTTP requests.</li>
+<li>nock: A mocking library to stub remote servers for testing your
+service's client operations.</li>
 </ul>
 
 <h1>
-<a id="initial-configuration" class="anchor" href="#initial-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Initial configuration</h1>
+<a id="get-started" class="anchor" href="#get-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get Started</h1>
 
-<p>Before you start writing some code, you'll need to do a couple house
-cleaning things first.</p>
+<p>Before we start, this opinionated boilerplate assumes that you will
+have <code>NODE_ENV</code> set to <code>development</code> in your local shell
+environment. If you don't know how to do that, look it up. It's easy,
+but I won't waste the space here for it.</p>
 
-<h2>
-<a id="personalize-your-repo" class="anchor" href="#personalize-your-repo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Personalize your repo</h2>
+<p>First, install the boilerplate generator as a global npm module.</p>
 
-<ul>
-<li>[ ] Set up a git pre-commit hook for linting:
-<code>make githooks</code>
-</li>
-<li>[ ] Run <code>npm install</code>. Out of the box you will get the dependencies
-listed below.</li>
-<li>[ ] Change the <code>name</code> and <code>version</code> in <code>package.json</code>.</li>
-</ul>
+<pre><code>$ git clone https://github.com/lukealbao/boilerplate.git
+$ npm install -g boilerplate/
+</code></pre>
 
-<h2>
-<a id="configure" class="anchor" href="#configure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configure</h2>
+<p>The boilerplate generator will be installed as a global binary
+available on your <code>PATH</code> as <code>bp</code>. To build a new project, simply
+create a new directory where you want it built, move to that
+directory, and run <code>bp</code>:</p>
+
+<pre><code>$ mkdir new-project
+$ cd new-project
+$ bp
+</code></pre>
+
+<p>You will be asked to name your project. You should use the convention
+of a short, lowercase name with hyphens separating different words.</p>
+
+<pre><code>Enter a name for your project:
+</code></pre>
+
+<p>Your new app will have an initial commit, and you can get started.</p>
+
+<h1>
+<a id="configure" class="anchor" href="#configure" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configure</h1>
 
 <p>Configuration is a chore. This will be a little easier. This
 boilerplate attempts to modularize configuration to facilitate
@@ -94,21 +179,38 @@ configuration - which helps minimize duplication. </li>
 </ol>
 
 <p>See <code>config/index.js</code> for more details on customizing
-configurations. <strong>PROTIP:</strong> From the root of the project directory,
+configurations.</p>
+
+<p><strong>PROTIP:</strong> From the root of the project directory,
 you can call <code>make printcfg</code> to see the entire <code>config</code> exported in
 the current environment, or use <code>make cfg-&lt;element&gt;</code> for a specific
-item using dot notation. E.g., <code>make cfg-db.user</code> will print <code>root</code>
-under a fresh boilerplate install.</p>
+item. If the <code>&lt;element&gt;</code> is a non-primitive object, you can access
+its attributes via dot notation. If you are looking to check a
+configuration in an array, you can still use dot notation. Everything
+that is available when a module requires <code>config</code> is inspectable:</p>
+
+<pre><code>$ make cfg-server
+{ name: 'BoilerplateApp', host: '0.0.0.0', port: 4434 }
+
+$ make cfg-server.name
+BoilerplateApp
+</code></pre>
 
 <h2>
 <a id="set-up-a-database" class="anchor" href="#set-up-a-database" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set up a database</h2>
 
-<p><code>make newdb</code> will give you a new database, provided your database
-daemon is running, and you have configured a database name in your <code>config</code>.</p>
+<pre><code>$ make newdb
+</code></pre>
 
-<p>Once you have defined your models and added them to the object
-exported by <code>lib/db.js</code>, you can <code>make checkdb</code>, and it will create
-your schema.</p>
+<p>Provided you have a database server running, this will create a new
+database. When getting started, you will likely want to change a few
+configurations before you run <code>make newdb</code>. You'll want a different
+database name, and if you have something other than MySQL running on
+your localhost, you'll need to specify that, too. You can do that via the
+<code>config/development.js</code> (or <code>config.default.js</code>!) files. </p>
+
+<p>This command is non-destructive and will only create a database if it
+does not exist.</p>
 
 <h1>
 <a id="conventions" class="anchor" href="#conventions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conventions</h1>
@@ -127,6 +229,30 @@ object, attaching all files as camelCased sub-object. So if you add
 a new handler in <code>/handlers/get-all-the-things.js</code>, you can access
 it with <code>require('./handlers').getAllTheThings</code>. Pretty cool!</li>
 </ul>
+
+<pre><code>├── Makefile
+├── README.md
+├── api.js
+├── config
+│   ├── defaults.js
+│   ├── development.js
+│   └── unittest.js
+├── docs
+│   ├── index.restdown
+│   ├── branding
+│   └── public
+├── handlers
+├── lib
+│   ├── db.js
+│   ├── errors.js
+│   └── models
+├── log
+├── test
+│   └── fixtures
+│       ├── db.js
+│       └── restify.js
+└── tools
+</code></pre>
       </section>
     </div>
 
