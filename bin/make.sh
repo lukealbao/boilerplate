@@ -1,4 +1,4 @@
-#! /usr/local/bin/bash
+#! /usr/bin/env bash
 
 # credit: http://stackoverflow.com/a/246128/3186745
 SOURCE="${BASH_SOURCE[0]}"
