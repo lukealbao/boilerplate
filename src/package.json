@@ -21,7 +21,8 @@
     "mocha": "^2.4.5",
     "nock": "^7.2.2",
     "sinon": "^1.17.3",
-    "supertest": "^1.2.0"
+    "supertest": "^1.2.0",
+    "dev-null": "^0.1.1"
   },
   "scripts": {
     "test": "NODE_ENV=unittest mocha --harmony $(find test -name *.test.js)",

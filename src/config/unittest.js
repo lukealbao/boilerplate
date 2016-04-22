@@ -2,20 +2,19 @@
 
 var development = require(__dirname + '/development');
 var deepCopy = require(__dirname + '/deep-copy');
-var openFile = require('fs').createWriteStream;
-
+var devnull = require('dev-null')();
 module.exports = deepCopy(development, {
   appLog: {
     name: 'BuryAppLog',
     streams: [{
-      stream: openFile('/dev/null'),
+      stream: devnull,
       level: 'info'
     }]
   },
   auditLog: {
     name: 'BuryAuditLog',
     streams: [{
-      stream: openFile('/dev/null'),
+      stream: devnull,
       level: 'info'
     }]
   }

@@ -34,7 +34,7 @@ module.exports = {
   auditLog: {
     name: 'BoilerplateAuditLog',
     streams: [{
-      stream: fs.createWriteStream('/tmp/audit.log', {
+      stream: fs.createWriteStream(process.env.AUDIT_LOG, {
         defaultEncoding: 'utf8',
         flags: 'a'
       })
