@@ -1,11 +1,5 @@
 # -*- mode: makefile -*-
 
-DB_USER		= $(shell make cfg-db.user)
-DB_PASSWORD	= $(shell make cfg-db.password)
-DB_DATABASE	= $(shell make cfg-db.database)
-DB_HOST		= $(shell make cfg-db.host)
-DB_PORT		= $(shell make cfg-db.port)
-DB_ADAPTER 	= $(shell make cfg-db.adapter)
 KNOWN_MODEL	= "set a model here"
 
 .PHONY: checkdb
@@ -18,8 +12,8 @@ dbfind: dbconnect
 	@./tools/db/find-db.js $(KNOWN_MODEL)
 
 .PHONY: dbconnect
-dbconnect: env.sh $(CONFIG) ./lib/db.js
-	source $<; ./tools/db/check-db.js
+dbconnect: $(CONFIG) ./lib/db.js
+	@./tools/db/check-db.js
 
 .PHONY: newdb
 newdb: createdb createschema

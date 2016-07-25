@@ -49,36 +49,31 @@ addhooks: ./tools/hooks/pre-commit
 .PHONY: clean
 clean:
 	@rm -f env.sh
+	@rm -f reqenv.tmp
 
 .PHONY: printcfg
-printcfg: env.sh
+printcfg:
 	@echo "Current configuration:"
 	@make cfg-
 
 .PHONY: cfg-%
-cfg%: env.sh
-	@source $<; echo $@ | sed 's/cfg-//' | node ./tools/node-config
+cfg%:
+	@echo $@ | sed 's/cfg-//' | node ./tools/node-config
 	@make clean
 
 .PHONY: printenv
-printenv: env.sh
+printenv:
 	@echo "Current environment:"
 	source $<; node -pe "process.env" | grep "DB\|NODE\|CENTRAL\|FP"
 
-envmap: reqenv.tmp env.sh
+envmap: reqenv.tmp
 	@echo ''
 	@echo '          Environment Map               '
 	@echo '----------------------------------------'
-	@source env.sh; \
-	cat $< | node ./tools/node-env.js
+	@cat $< | node ./tools/node-env.js
 	@echo '----------------------------------------'
-	@rm -f $<
 	@make clean
 
 reqenv.tmp: $(CONFIG)
 	egrep -or 'process.env.\w+' $< | sort | uniq | egrep -o [A-Z_]+ \
 		> reqenv.tmp
-
-env.sh:
-	@rm -f env.sh
-	@env >> env.sh
