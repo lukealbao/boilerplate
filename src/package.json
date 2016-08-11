@@ -10,6 +10,7 @@
   "dependencies": {
     "bluebird": "^3.3.3",
     "bunyan": "^1.7.0",
+    "gashlycrumb": "^1.0.1",
     "mysql": "^2.10.2",
     "restify": "^4.0.4",
     "sequelize": "^3.19.3"

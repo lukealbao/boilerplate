@@ -10,6 +10,7 @@
 'use strict';
 
 var http = require('https');
+var gashlycrumb = require('gashlycrumb');
 var restify = require('restify');
 var bunyan = require('bunyan');
 var config = require(__dirname + '/config');
@@ -95,11 +96,6 @@ app.on('uncaughtException', function (req, res, route, err) {
 });
 
 // -- ROUTES GO HERE
-app.get('/echo', function echo (req, res, next) {
-  res.header('content-type', 'text/plain');
-  res.send(200, 'Copasetic, Jack!\n');
-  next();
-});
-
+app.get('/echo', gashlycrumb.handler());
 
 module.exports = app;
