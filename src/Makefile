@@ -8,13 +8,7 @@
 #   printcfg	: Print app config with populated environment
 #   envmap	: Print all declared environment variables with current values
 #   newdb	: Create a new database according to config
-#
-# Because of installation restrictions at FP, we usually configure the user's
-# environment via a run script rather than system-level environment exports.
-# If that is the case with this repository, use the script which exports the
-# user's necessary varialbles below for the RUNSCRIPT.
 
-RUNSCRIPT = $(shell env)
 CONFIG = ./config
 
 
@@ -23,6 +17,7 @@ help:
 	@echo '                    Public Targets'
 	@echo '  --------------------------------------------------'
 	@echo '   help		: Show this target list'
+	@echo '   init		: One-time initialization for dev environment'
 	@echo '   githooks	: Add pre-commit hooks to git'
 	@echo '   checkdb	: Confirm db connectivity (no schema test)'
 	@echo '   printcfg	: Print app config with populated environment'
@@ -34,6 +29,18 @@ help:
 include ./tools/db/Makefile
 include ./tools/make/tests.mk
 include ./tools/make/docs.mk
+
+.PHONY: init
+init: NPM githooks node_modules
+	@sprintf("\nOk, time to write some code!\n")
+
+node_modules: NPM
+	@sprintf("Installing all NPM dependencies...")
+	@npm install
+
+.PHONY: NPM
+NPM:
+	@npm update -g npm
 
 .PHONY: githooks
 githooks: .git/hooks/pre-commit
