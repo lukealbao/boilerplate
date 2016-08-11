@@ -1,6 +1,6 @@
 # © λαlbao Boilerplate Installation Makefile
 
-THIS_DIR		= /Users/firstperformance/Documents/fpdev/boilerplate
+THIS_DIR		= $(shell pwd)
 SRC_DIR			= $(THIS_DIR)/src
 NPM 			= $(shell which npm)
 PROJECT_NAME		?=
